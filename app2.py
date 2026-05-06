@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, jsonify, session
 import random
 
-app = Flask(__name__)
-app.secret_key = "craps_secret_key"
+app2 = Flask(__name__)
+app2.secret_key = "craps_secret_key"
 
 MIN_BET = 3
 MAX_BET = 20
@@ -26,25 +26,25 @@ def update_leaderboard(name, bankroll):
     if name:
         leaderboard[name] = bankroll
 
-@app.route("/")
+@app2.route("/")
 def index():
     if "bankroll" not in session:
         init_game()
     return render_template("index2.html")
 
-@app.route("/set_name", methods=["POST"])
+@app2.route("/set_name", methods=["POST"])
 def set_name():
     name = request.json.get("name")
     session["name"] = name
     update_leaderboard(name, session["bankroll"])
     return jsonify({"success": True})
 
-@app.route("/leaderboard")
+@app2.route("/leaderboard")
 def get_leaderboard():
     sorted_board = sorted(leaderboard.items(), key=lambda x: x[1], reverse=True)
     return jsonify(sorted_board[:10])  # top 10
 
-@app.route("/state")
+@app2.route("/state")
 def state():
     return jsonify({
         "bankroll": session.get("bankroll", STARTING_BANKROLL),
@@ -53,7 +53,7 @@ def state():
         "name": session.get("name")
     })
 
-@app.route("/bet", methods=["POST"])
+@app2.route("/bet", methods=["POST"])
 def bet():
     amount = request.json.get("amount")
 
@@ -69,7 +69,7 @@ def bet():
     update_leaderboard(session["name"], session["bankroll"])
     return jsonify({"success": True})
 
-@app.route("/roll", methods=["POST"])
+@app2.route("/roll", methods=["POST"])
 def roll():
     roll = roll_dice()
 
@@ -133,7 +133,7 @@ def roll():
         "in_round": session["in_round"]
     })
 
-@app.route("/reset", methods=["POST"])
+@app2.route("/reset", methods=["POST"])
 def reset():
     name = session.get("name")
     init_game()
@@ -144,7 +144,7 @@ def reset():
 if __name__ == "__main__":
     app.run(debug=True)
 
-@app.route("/odds", methods=["POST"])
+@app2.route("/odds", methods=["POST"])
 def place_odds():
     amount = request.json.get("amount")
 
