@@ -71,7 +71,8 @@ def bet():
 
 @app2.route("/roll", methods=["POST"])
 def roll():
-    roll = roll_dice()
+    die1, die2 = roll_dice()
+    roll = die1 + die2
 
     if not session["in_round"]:
         if roll in [7, 11]:
