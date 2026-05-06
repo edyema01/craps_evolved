@@ -69,7 +69,7 @@ function animateDice() {
         }, 150);
 
         count++;
-        if (count > 10) clearInterval(interval);
+        if (count > 6) clearInterval(interval);
     }, 100);
 }
 
@@ -109,7 +109,7 @@ async function rollDice() {
         updateLeaderboard();
 
         button.disabled = false;
-    }, 800);
+    }, 900);
 }
 
 async function resetGame() {
