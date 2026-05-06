@@ -127,6 +127,7 @@ def roll():
 
     return jsonify({
         "roll": roll,
+        "dice": [die1, die2],   # 👈 THIS LINE IS REQUIRED
         "result": result,
         "bankroll": session["bankroll"],
         "point": session["point"],
